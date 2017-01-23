@@ -9,11 +9,8 @@ This projects wraps the `pykube <https://github.com/kelproject/pykube>`_ project
 Description
 -----------
 
-A general purpose wrapper around the ``pykube`` library designed for situations
-where having a readonly object as close to the actual Kubernetes API object
-as possible.
+A general purpose wrapper around the ``pykube`` library designed to make things
+such as writing configuration templates for containers using Jinja easier with
+Kubernetes resources.
 
-This library was designed for use in Jinja templates for writing configuration
-inside a container before application initialization and also to pause
-a container until it's Kubernetes services are up.  It has been open sourced
-in the case that it might be useful for someone else.
+It has been open sourced in the case that it might be useful for someone else.
