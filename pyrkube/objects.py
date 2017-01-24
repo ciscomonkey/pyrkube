@@ -101,7 +101,8 @@ class Container(GenericBase):
         self._init_environment()
 
     def _init_environment(self):
-        self.env = ContainerEnv(self, {env.name: env for env in self.env})
+        if hasattr(self, 'env'):
+            self.env = ContainerEnv(self, {env.name: env for env in self.env})
 
 
 class ContainerEnv(GenericBase):
