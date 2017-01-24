@@ -22,7 +22,8 @@ setup(
     author='Joe Black',
     author_email='joeblack949@gmail.com',
     url='https://github.com/joeblackwaslike/pyrkube',
-    download_url='https://github.com/joeblackwaslike/pyrkube/tarball/0.2.0',
+    download_url=(
+        'https://github.com/joeblackwaslike/pyrkube/tarball/%s' % version),
     license='Apache 2.0',
     zip_safe=False,
     packages=find_packages(),
@@ -31,9 +32,6 @@ setup(
         'pykube',
         'six'
     ],
-    # setup_requires=[
-    #     'pytest-runner'
-    # ],
     tests_require=['pytest'],
     classifiers=[
         'Development Status :: 3 - Alpha',

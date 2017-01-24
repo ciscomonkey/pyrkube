@@ -16,13 +16,9 @@ from . import config, objects
 from .adict import adict
 
 
-KUBECONFIG_PATHS = dict(
-    dev='~/.kube/config',
-    test='~/.kube/config'
-)
 SERVICE_ACCOUNT_PATH = '/var/run/secrets/kubernetes.io/serviceaccount'
 
-WatchEvent = collections.namedtuple("WatchEvent", "type object")
+WatchEvent = collections.namedtuple('WatchEvent', 'type object')
 
 
 class KubeAPIClient:
@@ -64,12 +60,12 @@ class KubeAPIClient:
         )
 
     def _get_api(self):
-        if self.env in ('dev', 'test'):
-            kube_config = KUBECONFIG_PATHS.get(self.env)
+        try:
             return pykube.http.HTTPClient(
-                pykube.KubeConfig.from_file(kube_config))
-        return pykube.http.HTTPClient(
-            pykube.KubeConfig.from_service_account())
+                pykube.KubeConfig.from_service_account())
+        except FileNotFoundError:
+            return pykube.http.HTTPClient(
+                pykube.KubeConfig.from_file('~/.kube/config'))
 
     @staticmethod
     def _get_resource_name(name):

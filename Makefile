@@ -1,14 +1,25 @@
 .PHONY: docs
+SHELL = /bin/zsh
+SHELLFLAGS = -ilc
+
+PROJECT := $(shell basename $(shell pwd))
+WORKON_HOME := $(shell echo $$WORKON_HOME)
+VENV_PATH := $(WORKON_HOME)/$(PROJECT)
+VENV_BIN_PATH := $(VENV_PATH)/bin
 
 init:
-	zsh -ilc "mkvirtualenv -a $(shell pwd) -r requirements.txt $(shell basename $(shell pwd))"
+	@zsh -ilc "mkvirtualenv -a $(PWD) -r requirements.txt -r requirements-test.txt $(PROJECT)"
+	@echo -e "\nRemember to execute: workon $(PROJECT)"
+
+develop:
+	$(VENV_BIN_PATH)/python3 setup.py develop
 
 publish:
-	python3 setup.py register -r pypi
-	python3 setup.py sdist upload -r pypi
+	$(VENV_BIN_PATH)/python3 setup.py register -r pypi
+	$(VENV_BIN_PATH)/python3 setup.py sdist upload -r pypi
 	rm -rf build dist pyrkube.egg-info
 
 test:
-	py.test
+	$(VENV_BIN_PATH)/py.test
 
-.PHONY: init publish test
+.PHONY: init develop publish test
