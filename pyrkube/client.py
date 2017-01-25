@@ -8,6 +8,7 @@ API Client wrappers, etc for pyrkube.
 :license: Apache2.
 """
 
+import os
 import collections
 
 import pykube
@@ -64,8 +65,9 @@ class KubeAPIClient:
             return pykube.http.HTTPClient(
                 pykube.KubeConfig.from_service_account())
         except FileNotFoundError:
+            kube_config = os.getenv('KUBECONFIG_PATH', '~/.kube/config')
             return pykube.http.HTTPClient(
-                pykube.KubeConfig.from_file('~/.kube/config'))
+                pykube.KubeConfig.from_file(kube_config))
 
     @staticmethod
     def _get_resource_name(name):
