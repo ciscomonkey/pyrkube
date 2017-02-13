@@ -15,6 +15,7 @@ import pykube
 
 from . import config, objects
 from .adict import adict
+from .exceptions import KubeConfigNotFound
 
 
 SERVICE_ACCOUNT_PATH = '/var/run/secrets/kubernetes.io/serviceaccount'
@@ -66,8 +67,11 @@ class KubeAPIClient:
                 pykube.KubeConfig.from_service_account())
         except FileNotFoundError:
             kube_config = os.getenv('KUBECONFIG_PATH', '~/.kube/config')
-            return pykube.http.HTTPClient(
-                pykube.KubeConfig.from_file(kube_config))
+            try:
+                return pykube.http.HTTPClient(
+                    pykube.KubeConfig.from_file(kube_config))
+            except (FileNotFoundError, pykube.PyKubeError):
+                raise KubeConfigNotFound('Could detect kube-config')
 
     @staticmethod
     def _get_resource_name(name):
