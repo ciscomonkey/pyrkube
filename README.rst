@@ -1,8 +1,8 @@
 pyrkube
 ~~~~~~~
 
-Maintainer: Joe Black <joeblack949@gmail.com>
-Repository: https://www.github.com/joeblackwaslike/pyrkube
+Maintainer: Joe Black <me@joeblack.nyc>
+Repository: https://www.github.com/telephoneorg/pyrkube
 
 This projects wraps the `pykube <https://github.com/kelproject/pykube>`_ project.
 

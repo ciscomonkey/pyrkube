@@ -20,10 +20,10 @@ setup(
     long_description=long_description,
     keywords=['kubernetes', 'clustering', 'templating'],
     author='Joe Black',
-    author_email='joeblack949@gmail.com',
-    url='https://github.com/joeblackwaslike/pyrkube',
+    author_email='me@joeblack.nyc',
+    url='https://github.com/telephoneorg/pyrkube',
     download_url=(
-        'https://github.com/joeblackwaslike/pyrkube/tarball/%s' % version),
+        'https://github.com/telephoneorg/pyrkube/tarball/%s' % version),
     license='Apache 2.0',
     zip_safe=False,
     packages=find_packages(),
