@@ -1,5 +1,10 @@
 # Changelog for pyrkube
 
+## 0.2.4
+### Nov 16, 2017
+* Added Node API object.
+* Improved logic for non-namespaced objects.
+
 ## 0.2.3
 ### Feb 13, 2016
 * Added exception KubeConfigNotFound.

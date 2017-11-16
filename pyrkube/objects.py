@@ -63,6 +63,21 @@ class ResourceBase(adict, metaclass=abc.ABCMeta):
         self = self._api.get(self.kind, self.name)
 
 
+class Node(ResourceBase):
+    """A Kubernetes Node Resource."""
+    kind = 'Node'
+
+    @property
+    def ip(self):
+        addrs = self['status']['addresses']
+        return [a.address for a in addrs if a.type == 'InternalIP'][0]
+
+    @property
+    def hostname(self):
+        addrs = self['status']['addresses']
+        return [a.address for a in addrs if a.type == 'Hostname'][0]
+
+
 class Pod(ResourceBase):
     """A Kubernetes Pod Resource."""
     kind = 'Pod'

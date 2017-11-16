@@ -81,13 +81,15 @@ class KubeAPIClient:
                 return key
 
     def _get_resources(self, name):
+        # if name == 'node':
+            # import pdb; pdb.set_trace()
         name = self._get_resource_name(name)
         return adict(
             pykube=getattr(pykube.objects, name),
             pyrkube=getattr(objects, name)
         )
 
-    def get(self, resource, name=None, selector=None, namespace=None,
+    def get(self, resource, name=None, selector=None, namespace=False,
             watch=False, since=None):
         """Return an api object.
 
@@ -103,8 +105,11 @@ class KubeAPIClient:
           Either a Resource Object, list of Resource Objects, or if a watch
           query, a generator of Watch EVents.
         """
-        namespace = namespace or self.namespace
+        if namespace is False:
+            namespace = self.namespace
+
         resources = self._get_resources(resource)
+
         if not issubclass(resources.pykube, pykube.objects.APIObject):
             raise pykube.PyKubeError(
                 'No pykube object of type: %s', resources.pykube
@@ -113,6 +118,7 @@ class KubeAPIClient:
         req = pykube.query.Query(
             self.api, resources.pykube, namespace=namespace
         )
+
         if selector:
             req = req.filter(selector=selector)
             if watch:

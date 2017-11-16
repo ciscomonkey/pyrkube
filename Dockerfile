@@ -15,7 +15,7 @@ RUN     apt-get update && \
         pip3 install --upgrade pip requests setuptools
 
 ARG     PYRKUBE_VERSION
-ENV     PYRKUBE_VERSION=${PYRKUBE_VERSION:-0.2.3}
+ENV     PYRKUBE_VERSION=${PYRKUBE_VERSION:-0.2.4}
 LABEL   app.version=$PYRKUBE_VERSION
 
 RUN     pip3 install pyrkube==$PYRKUBE_VERSION
