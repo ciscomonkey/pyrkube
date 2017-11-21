@@ -81,13 +81,15 @@ class KubeAPIClient:
                 return key
 
     def _get_resources(self, name):
-        # if name == 'node':
-            # import pdb; pdb.set_trace()
         name = self._get_resource_name(name)
         return adict(
             pykube=getattr(pykube.objects, name),
             pyrkube=getattr(objects, name)
         )
+
+    def get_first(self, *args, **kwargs):
+        objs = self.get(*args, **kwargs)
+        return objs[0]
 
     def get(self, resource, name=None, selector=None, namespace=False,
             watch=False, since=None):

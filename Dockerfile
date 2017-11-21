@@ -2,9 +2,6 @@ FROM    telephoneorg/debian:stretch
 
 MAINTAINER Joe Black <me@joeblack.nyc>
 
-ADD     https://github.com/Yelp/dumb-init/releases/download/v1.2.0/dumb-init_1.2.0_amd64 /dumb-init
-RUN     chmod +x /dumb-init
-
 LABEL   lang.python.version=3
 LABEL   app.name=pyrkube
 
@@ -12,10 +9,10 @@ LABEL   app.name=pyrkube
 RUN     apt-get update && \
             apt-get install -yqq python3 python3-pip && \
             apt-clean --aggressive && \
-        pip3 install --upgrade pip requests setuptools
+        pip3 install --upgrade pip requests setuptools six pip
 
 ARG     PYRKUBE_VERSION
-ENV     PYRKUBE_VERSION=${PYRKUBE_VERSION:-0.2.4}
+ENV     PYRKUBE_VERSION=${PYRKUBE_VERSION:-0.2.5}
 LABEL   app.version=$PYRKUBE_VERSION
 
 RUN     pip3 install pyrkube==$PYRKUBE_VERSION

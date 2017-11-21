@@ -26,7 +26,7 @@ from .objects import (
 )
 
 __title__ = 'pyrkube'
-__version__ = '0.2.4'
+__version__ = '0.2.5'
 __build__ = 0x000203
 __author__ = "Joe Black <joe@valuphone.com>"
 __license__ = 'Apache 2.0'
