@@ -1,0 +1,30 @@
+language: python
+python:
+- '3.6'
+services: docker
+
+notifications:
+  email:
+    on_success: never
+    on_failure: always
+  slack:
+    rooms:
+    - secure: JR8hvaqF/GFMG3VOCpY7ou7hkGahGB6Gt+l1MQSKzpeKnMW9wvvaFvrbNuG8FXFFdFfJ4lEzH/LQCX1oaAPPwztCz57OFBErhOAJL5adD3AchAisBahDWI+Om5JGvTrkkfTJMWK2d9KLz/S0+25eRKBgLlqEQfTpnOwmRPGf6CVaeVe5hhhQvLhJkD3MVGLBrXiUxBNXoU0Aw8Q/nuVTaaPw9Cfb3PIr0u8rdjp3P+KgGx28JgXRqhEwdIxApO5a0/pU6PDwvsYFvr7j90D4wRGSM5VCAY96HWc+pgpYtKiVEKWp4rqhlo3xG5i4Jz4IjIXEvA/eLf1hwaQFWOIj0MuM88XKVQG1xuBqrg5eIxI74NWxE2dHpSDnDNyfVT4CEMshcF9rJW4P4pjw29qokESIXtOHndthHwr9olwdLZSclJS4/nBYZcmFiIdCKzZXnt9htn1Qhmgs/ehu2GhdOMbMcyblq0jR2uyuqi17UrFhrtxEVa6VHl8vgDKcIk1iEBZd3+raWIw3i6PfQo0RldfbaBhStV0Dbf9709CW7v1YXtj8cO5QZiwScddotwdDlcThyZMm199n5V5hC+r8HKksXbtLG3ofS7zS1jfeufP/LbiP9KUYXRiS8ldzyhu0oBlpyMa28Uw3tKTuIwoGI3jYOsfwgqPSsmvjWgB4bls=
+    on_success: always
+    on_failure: always
+
+before_install:
+- source scripts/ci/environment.sh
+- pip install invoke
+
+install: pip install -e .
+script: true
+
+deploy:
+  provider: pypi
+  user: joeblackwaslike
+  password:
+    secure: n5kER7nGvsy+SV4kQ9iLPu0ig56G5M55vMLODMZIaHPDPHSzq9tZ0Bh8IGGE81MjHp6Q3ixhPQCMUShQ4tYYgIdI8PPx8kVpme8o5WbVeoHz27HwiEEidr9wZ0OZ+sSMTBaQaBlgDuoSd/TGR3YfwijZdC/iZLwYdtaXde8B+dbukTk4PjkKRIgnNWdE5J3UMpa3voeoTnnkczFqK4r72Qvx37B5DfZb2BAky5Do1hNepi3utL+5AzCc0Ck4SjzQLsHqjCpp1zCTDHkdAofGsSdKLrV913OI061Xhdse4Q2vFEODV+R34WJQ9IgvtQkM5PxQ+zw5QTFSNwOGa4e6+5itO0/RrA94X9lAzNYHtyZ9afWDXiaIcG904NVcjH1RR5BilMdJvaVZ/BiidQFUqH+69PP6G+GyFumcI6aKELXAZSQRucjmp3uN2Sj6O1YKaq5wY3Vp19sB6AmXWQO175l/0uNUTdvIgfDQXoKZn0bjHr3YzeBWCUD0FrwDFbVwOMu8z4MhQfkAFejLXIbJLMocE/BKwn9A85R95zzCbCqNpeUwpmWYBlbtzIYtd+9unFuYI0oW/HG9CoPtUZ6+ERWZfaadF/M4lokte1RuLZcYND2GIE6ZjzAhdwPs/Ol98jJQqgyV0RPk1BioBex67GEclRVNaGunieNmgiwDEJ0=
+  skip_cleanup: true
+  on:
+    tags: true

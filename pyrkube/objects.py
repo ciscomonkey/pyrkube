@@ -62,6 +62,41 @@ class ResourceBase(adict, metaclass=abc.ABCMeta):
         """Reload the object's data from the kubernetes API."""
         self = self._api.get(self.kind, self.name)
 
+    @property
+    def annotations(self):
+        return self._wrapper.obj['metadata']['annotations']
+
+    @annotations.setter
+    def annotations(self, annotations_):
+        return self.annotate(annotations_)
+
+    def annotate(self, annotations_):
+        self['metadata']['annotations'].update(annotations_)
+        obj = self._wrapper.obj
+        obj['metadata']['annotations'].update(annotations_)
+        self.update()
+        self.reload()
+        return obj['metadata']['annotations']
+
+    @property
+    def labels(self):
+        return self._wrapper.obj['metadata']['labels']
+
+    @labels.setter
+    def labels(self, labels_):
+        return self.label(labels_)
+
+    def label(self, labels_):
+        self['metadata']['labels'].update()
+        obj = self._wrapper.obj
+        obj['metadata']['labels'].update(labels_)
+        self.update()
+        self.reload()
+        return obj['metadata']['labels']
+
+    def update(self):
+        self._wrapper.obj.update()
+
 
 class Node(ResourceBase):
     """A Kubernetes Node Resource."""
