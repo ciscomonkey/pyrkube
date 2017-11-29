@@ -13,9 +13,7 @@ notifications:
     on_success: always
     on_failure: always
 
-before_install:
-- source scripts/ci/environment.sh
-- pip install invoke
+before_install: pip install invoke
 
 install: pip install -e .
 script: true
