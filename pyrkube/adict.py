@@ -9,7 +9,7 @@ Attribute Dictionary type for pyrkube.
 """
 
 from abc import ABCMeta, abstractmethod
-from collections import Mapping, MutableMapping, Sequence
+from collections.abc import Mapping, MutableMapping, Sequence
 import re
 import types
 import copy
@@ -45,8 +45,9 @@ def merge(left, right):
         left_value = left[key]
         right_value = right[key]
 
-        if (isinstance(left_value, Mapping) and
-                isinstance(right_value, Mapping)):  # recursive merge
+        if isinstance(left_value, Mapping) and isinstance(
+            right_value, Mapping
+        ):  # recursive merge
             merged[key] = merge(left_value, right_value)
         else:  # overwrite with right value
             merged[key] = right_value
@@ -73,6 +74,7 @@ class Attr(Mapping):
         than if accessed as an attribute than if it is accessed as an
         item.
     """
+
     @abstractmethod
     def _configuration(self):
         """
@@ -155,9 +157,10 @@ class Attr(Mapping):
         """
         if isinstance(obj, Mapping):
             obj = self._constructor(obj, self._configuration())
-        elif (isinstance(obj, Sequence) and
-              not isinstance(obj, (six.string_types, six.binary_type))):
-            sequence_type = getattr(self, '_sequence_type', None)
+        elif isinstance(obj, Sequence) and not isinstance(
+            obj, (six.string_types, six.binary_type)
+        ):
+            sequence_type = getattr(self, "_sequence_type", None)
 
             if sequence_type:
                 obj = sequence_type(self._build(element) for element in obj)
@@ -176,9 +179,9 @@ class Attr(Mapping):
             'register').
         """
         return (
-            isinstance(key, six.string_types) and
-            re.match('^[A-Za-z][A-Za-z0-9_]*$', key) and
-            not hasattr(cls, key)
+            isinstance(key, six.string_types)
+            and re.match("^[A-Za-z][A-Za-z0-9_]*$", key)
+            and not hasattr(cls, key)
         )
 
 
@@ -188,6 +191,7 @@ class MutableAttr(Attr, MutableMapping):
     A mixin class for a mapping that allows for attribute-style access
     of values.
     """
+
     def _setattr(self, key, value):
         """
         Add an attribute to the object, without attempting to add it as
@@ -203,7 +207,7 @@ class MutableAttr(Attr, MutableMapping):
         """
         if self._valid_name(key):
             self[key] = value
-        elif getattr(self, '_allow_invalid_attributes', True):
+        elif getattr(self, "_allow_invalid_attributes", True):
             super(MutableAttr, self).__setattr__(key, value)
         else:
             raise TypeError(
@@ -226,7 +230,7 @@ class MutableAttr(Attr, MutableMapping):
         """
         if self._valid_name(key):
             del self[key]
-        elif getattr(self, '_allow_invalid_attributes', True):
+        elif getattr(self, "_allow_invalid_attributes", True):
             super(MutableAttr, self).__delattr__(key)
         else:
             raise TypeError(
@@ -240,11 +244,12 @@ class AttrDict(dict, MutableAttr):
     """
     A dict that implements MutableAttr.
     """
+
     def __init__(self, *args, **kwargs):
         super(AttrDict, self).__init__(*args, **kwargs)
 
-        self._setattr('_sequence_type', tuple)
-        self._setattr('_allow_invalid_attributes', False)
+        self._setattr("_sequence_type", tuple)
+        self._setattr("_allow_invalid_attributes", False)
 
     def _configuration(self):
         """
@@ -256,11 +261,7 @@ class AttrDict(dict, MutableAttr):
         """
         Serialize the object.
         """
-        return (
-            self.copy(),
-            self._sequence_type,
-            self._allow_invalid_attributes
-        )
+        return (self.copy(), self._sequence_type, self._allow_invalid_attributes)
 
     def __setstate__(self, state):
         """
@@ -268,11 +269,11 @@ class AttrDict(dict, MutableAttr):
         """
         mapping, sequence_type, allow_invalid_attributes = state
         self.update(mapping)
-        self._setattr('_sequence_type', sequence_type)
-        self._setattr('_allow_invalid_attributes', allow_invalid_attributes)
+        self._setattr("_sequence_type", sequence_type)
+        self._setattr("_allow_invalid_attributes", allow_invalid_attributes)
 
     def __repr__(self):
-        return six.u('AttrDict({contents})').format(
+        return six.u("AttrDict({contents})").format(
             contents=super(AttrDict, self).__repr__()
         )
 
@@ -282,13 +283,14 @@ class AttrDict(dict, MutableAttr):
         A standardized constructor.
         """
         attr = cls(mapping)
-        attr._setattr('_sequence_type', configuration)
+        attr._setattr("_sequence_type", configuration)
 
         return attr
 
 
 class adict(util.ReprMixin, util.PrivAttrKeyMixin, AttrDict):
     """Customized attribute dictionary type."""
+
     def __init__(self, *args, **kwargs):
         def convert(o):
             """Recursor for recursively converting object to adict."""
@@ -311,9 +313,8 @@ class adict(util.ReprMixin, util.PrivAttrKeyMixin, AttrDict):
 
     @classmethod
     def _valid_name(cls, key):
-        return (
-            isinstance(key, six.string_types) and
-            re.match('^[A-Za-z_][A-Za-z0-9_]*$', key)
+        return isinstance(key, six.string_types) and re.match(
+            "^[A-Za-z_][A-Za-z0-9_]*$", key
         )
         # and not hasattr(cls, key)
 
